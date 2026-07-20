@@ -24,7 +24,7 @@ export default function ProductTable({ products, brands, categories }: Props) {
   return (
     <>
       <div className="filter-card">
-        <input aria-label="Cari produk" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Cari produk, brand, SKU, minimum order..." />
+        <div className="search-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.2 4.2"/></svg><input aria-label="Cari produk" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Cari produk, brand, atau SKU" /></div>
         <select aria-label="Filter brand" value={brand} onChange={(e) => setBrand(e.target.value)}>
           <option value="">Semua brand</option>{brands.map((item) => <option key={item}>{item}</option>)}
         </select>
@@ -32,7 +32,7 @@ export default function ProductTable({ products, brands, categories }: Props) {
           <option value="">Semua kategori</option>{categories.map((item) => <option key={item}>{item}</option>)}
         </select>
       </div>
-      <div className="result-meta">Menampilkan <strong>{filtered.length}</strong> dari {products.length} baris harga</div>
+      <div className="result-meta"><strong>{filtered.length}</strong> hasil</div>
       <div className="table-wrap">
         <table>
           <thead><tr><th>Produk</th><th>SKU</th><th>Satuan</th><th>Harga Aktif</th><th>Min. Order</th><th></th></tr></thead>
@@ -48,6 +48,9 @@ export default function ProductTable({ products, brands, categories }: Props) {
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="product-cards">
+        {filtered.map((product) => <Link className="product-card" href={`/master-harga/${product.id}`} key={product.id}><div><span>{product.brand || product.category || 'Produk'}</span><strong>{product.name || 'Tanpa nama'}</strong><small>{[product.sku, product.unit, product.minimum_order].filter(Boolean).join(' · ')}</small></div><div className="card-price"><strong>{formatRupiah(effectivePrice(product))}</strong><span>›</span></div></Link>)}
       </div>
     </>
   );
